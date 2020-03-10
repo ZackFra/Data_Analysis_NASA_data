@@ -346,6 +346,6 @@ graph_tab %>%
   group_by(Halo) %>% 
   summarize(true = (sum(Halo) / valid_data) * 100, 
             false = (sum(!Halo) / valid_data) * 100) %>% 
-  ggplot(aes(x=Halo, y=true + false)) + geom_bar(stat = "identity")
+  ggplot(aes(x = Halo, y = true + false)) + geom_bar(stat = "identity") + ggtitle("Flares with Halos") + labs(x = "Has Halo?", y = "Percentage (%)")
 ```
 
