@@ -235,7 +235,7 @@ flare_match <- function(E1, E2) {
   
   for(i in 1:nrow(sim_matrix)) {
     matches <- append(matches, max(sim_matrix[i,], na.rm=TRUE))
-    index[i] <- ifelse(matches[i] < 1.05, NA, which(sim_matrix[i,] == max(sim_matrix[i,], na.rm=TRUE)))
+    index[i] <- ifelse(matches[i] < 1.01, NA, which(sim_matrix[i,] == max(sim_matrix[i,], na.rm=TRUE)))
   }
   index
 }
@@ -250,7 +250,9 @@ for( i in 1:nrow(graph_tab)) {
   graph_tab[i, 'Halo'] <- NASA_tab$Halo[graph_tab$index[i]]
 }
 
+valid_data <- length(which(!is.na(graph_tab$Halo)))
+
 graph_tab %>% 
   group_by(Halo) %>% 
-  summarize(true = sum(Halo), false = sum(!Halo)) %>% 
-  ggplot(aes(x = Halo, y = true + false  )) + geom_bar(stat = "identity")
+  summarize(true = (sum(Halo) / valid_data) * 100, false = (sum(!Halo) / valid_data) * 100) %>% 
+  ggplot(aes(x=Halo, y=true + false)) + geom_bar(stat = "identity")
