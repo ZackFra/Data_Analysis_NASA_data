@@ -237,11 +237,11 @@ NASA_top50 <- NASA_tab %>%
 head(NASA_top50)
 ```
 
-You cannot get the same solar flares with the NASA table, although you can get a similar one.
+You cannot get the same table with the NASA data, although you can get a similar one.
 It appears that the weather table got it's information from a different source than the
 NASA table. Also the NASA table does not record the maximum time, only the CME time.
 It does appear however that some of the solar flares in the NASA table are the same ones
-as the ones in the Weather table.
+as the ones in the weather table.
 
 ## Question 2: Entity Resolution (15 pts)
 
