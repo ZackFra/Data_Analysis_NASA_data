@@ -252,8 +252,8 @@ that was a typo or if these tables are using slightly different regional categor
 * s_datetime measures the differences between datetimes and returns an exponential value such that the 
 smaller the difference is, the larger the value that will be returned.
 
-The threshold is set to 1.05. Initially I set it to 1, but I kept resolving top 50 flares to
-NASA flares that were blatantly false. Slightly raising the threshold alleviated this problem.
+The threshold is set to 1.01 so that if something is in the same region
+it won't automatically be resolved to an entity in the NASA data.
 
 ```{r entity_resolution}
 
@@ -304,7 +304,7 @@ flare_match <- function(E1, E2) {
   
   for(i in 1:nrow(sim_matrix)) {
     matches <- append(matches, max(sim_matrix[i,], na.rm=TRUE))
-    index[i] <- ifelse(matches[i] < 1, NA, which(sim_matrix[i,] == max(sim_matrix[i,],
+    index[i] <- ifelse(matches[i] < 1.01, NA, which(sim_matrix[i,] == max(sim_matrix[i,],
                                                                           na.rm=TRUE)))
   }
   index
