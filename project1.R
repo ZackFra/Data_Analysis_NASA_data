@@ -108,7 +108,7 @@ NASA_tab$start_freq[startsWith(NASA_tab$start_freq, '?')] <- NA
 NASA_tab$end_freq[startsWith(NASA_tab$end_freq, '?')] <- NA
 NASA_tab$location[grepl(".*[bB][aA][cC][kK].*", NASA_tab$location)] <- NA
 NASA_tab$NOAA[startsWith(NASA_tab$NOAA, '-')] <- NA
-NASA_tab$imp[startsWith(NASA_tab$imp, '-')] <- NA
+NASA_tab$imp[startsWith(NASA_tab$imp, '-') | grepl('.*[fF][iI][lL][aA].*', NASA_tab$imp)] <- NA
 NASA_tab$CME_date[startsWith(NASA_tab$CME_date, '-')] <- NA
 NASA_tab$CME_time[startsWith(NASA_tab$CME_time, '-')] <- NA
 NASA_tab$CME_angle[startsWith(NASA_tab$CME_angle, '-')] <- NA

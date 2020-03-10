@@ -55,27 +55,27 @@ weather_tab <- weather_tab %>%
 
 # convert the combined columns into datetime objects
 weather_tab <- weather_tab %>% 
-  mutate(start_time = make_datetime(year = strtoi(str_sub(start_time, start = 1L, end = 4L), 
-                                                  base = 10L), 
-                                    month = strtoi(str_sub(start_time, 6L, 7L), base = 10L), 
-                                    day = strtoi(str_sub(start_time, 9L, 10L), base = 10L), 
-                                    hour = strtoi(str_sub(start_time, 12L, 13L), base = 10L), 
-                                    min = strtoi(str_sub(start_time, 15L, 16L), base = 10L), 
-                                    sec = 0)) %>% 
-  mutate(end_time = make_datetime(year = strtoi(str_sub(end_time, start = 1L, end = 4L), 
-                                                base = 10L), 
-                                  month = strtoi(str_sub(end_time, 6L, 7L), base = 10L), 
-                                  day = strtoi(str_sub(end_time, 9L, 10L), base = 10L), 
-                                  hour = strtoi(str_sub(end_time, 12L, 13L), base = 10L), 
-                                  min = strtoi(str_sub(end_time, 15L, 16L), base = 10L), 
-                                  sec = 0)) %>% 
-  mutate(maximum_time = make_datetime(year = strtoi(str_sub(maximum_time, start = 1L, end = 4L), 
-                                                    base = 10L), 
-                                      month = strtoi(str_sub(maximum_time, 6L, 7L), base = 10L), 
-                                      day = strtoi(str_sub(maximum_time, 9L, 10L), base = 10L), 
-                                      hour = strtoi(str_sub(maximum_time, 12L, 13L), base = 10L), 
-                                      min = strtoi(str_sub(maximum_time, 15L, 16L), base = 10L), 
-                                      sec = 0)) %>% 
+  mutate(start_time = make_datetime(
+    year = strtoi(str_sub(start_time, start = 1L, end = 4L), base = 10L), 
+    month = strtoi(str_sub(start_time, 6L, 7L), base = 10L), 
+    day = strtoi(str_sub(start_time, 9L, 10L), base = 10L), 
+    hour = strtoi(str_sub(start_time, 12L, 13L), base = 10L), 
+    min = strtoi(str_sub(start_time, 15L, 16L), base = 10L), 
+    sec = 0)) %>% 
+  mutate(end_time = make_datetime(
+    year = strtoi(str_sub(end_time, start = 1L, end = 4L), base = 10L), 
+    month = strtoi(str_sub(end_time, 6L, 7L), base = 10L), 
+    day = strtoi(str_sub(end_time, 9L, 10L), base = 10L), 
+    hour = strtoi(str_sub(end_time, 12L, 13L), base = 10L), 
+    min = strtoi(str_sub(end_time, 15L, 16L), base = 10L), 
+    sec = 0)) %>% 
+  mutate(maximum_time = make_datetime(
+    year = strtoi(str_sub(maximum_time, start = 1L, end = 4L), base = 10L), 
+    month = strtoi(str_sub(maximum_time, 6L, 7L), base = 10L), 
+    day = strtoi(str_sub(maximum_time, 9L, 10L), base = 10L), 
+    hour = strtoi(str_sub(maximum_time, 12L, 13L), base = 10L), 
+    min = strtoi(str_sub(maximum_time, 15L, 16L), base = 10L), 
+    sec = 0)) %>% 
   select(rank, flare_classification, flare_region, start_datetime = start_time, maximum_datetime = maximum_time, end_datetime = end_time, -date)
 
 head(weather_tab)
@@ -149,7 +149,8 @@ NASA_tab$start_freq[startsWith(NASA_tab$start_freq, '?')] <- NA
 NASA_tab$end_freq[startsWith(NASA_tab$end_freq, '?')] <- NA
 NASA_tab$location[grepl('.*[bB][aA][cC][kK].*', NASA_tab$location)] <- NA
 NASA_tab$NOAA[startsWith(NASA_tab$NOAA, '-')] <- NA
-NASA_tab$imp[startsWith(NASA_tab$imp, '-')] <- NA
+NASA_tab$imp[startsWith(NASA_tab$imp, '-') 
+             | grepl('.*[fF][iI][lL][aA].*', NASA_tab$imp)] <- NA
 NASA_tab$CME_date[startsWith(NASA_tab$CME_date, '-')] <- NA
 NASA_tab$CME_time[startsWith(NASA_tab$CME_time, '-')] <- NA
 NASA_tab$CME_angle[startsWith(NASA_tab$CME_angle, '-')] <- NA
@@ -303,7 +304,7 @@ flare_match <- function(E1, E2) {
   
   for(i in 1:nrow(sim_matrix)) {
     matches <- append(matches, max(sim_matrix[i,], na.rm=TRUE))
-    index[i] <- ifelse(matches[i] < 1.05, NA, which(sim_matrix[i,] == max(sim_matrix[i,],
+    index[i] <- ifelse(matches[i] < 1, NA, which(sim_matrix[i,] == max(sim_matrix[i,],
                                                                           na.rm=TRUE)))
   }
   index
