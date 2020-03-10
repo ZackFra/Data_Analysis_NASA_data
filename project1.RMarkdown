@@ -330,8 +330,9 @@ head(weather_tab)
 
 ## Question 3: Analysis (10 pts)
 
-This plot analyzes the proportion of Halo CMEs to non-Halo CMEs in top 50 flares 
-that were resolvable.
+This plot analyzes the proportion of halo CMEs to non-halo CMEs based on the 
+resolvable flares from the top 50 table. It seems that there is some sort of 
+correlation between being a top 50 flare and having a halo CME.
 
 ```{r pressure}
 graph_tab <- filter(weather_tab, !is.na(index))
@@ -346,6 +347,8 @@ graph_tab %>%
   group_by(Halo) %>% 
   summarize(true = (sum(Halo) / valid_data) * 100, 
             false = (sum(!Halo) / valid_data) * 100) %>% 
-  ggplot(aes(x = Halo, y = true + false)) + geom_bar(stat = "identity") + ggtitle("Flares with Halos") + labs(x = "Has Halo?", y = "Percentage (%)")
+  ggplot(aes(x = Halo, y = true + false)) + 
+  geom_bar(stat = "identity") + ggtitle("Top 50 Flares with Halos") + 
+  labs(x = "Has Halo?", y = "Percentage (%)")
 ```
 
